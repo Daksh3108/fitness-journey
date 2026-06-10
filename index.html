@@ -8,11 +8,18 @@
       name="description"
       content="Daksh Avtani's fitness journey, training split, diet, and beginner gym guide."
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&family=Oswald:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div class="scroll-progress" aria-hidden="true"></div>
     <header class="site-header">
-      <a class="brand" href="#top">Daksh Avtani</a>
+      <a class="brand" href="#top"><span class="brand-dot"></span>Daksh Avtani</a>
       <nav class="nav-links" aria-label="Main navigation">
         <a href="#journey">Journey</a>
         <a href="#training">Training</a>
@@ -23,11 +30,22 @@
 
     <main id="top">
       <section class="hero">
+        <div class="ghost-title" aria-hidden="true">Fitness Journey</div>
         <div class="hero-media" aria-hidden="true"></div>
         <div class="hero-overlay"></div>
+        <svg class="hero-wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0,64 C240,140 480,0 720,48 C960,96 1200,20 1440,72" fill="none" stroke="url(#waveGrad)" stroke-width="2.5" />
+          <defs>
+            <linearGradient id="waveGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="rgba(190,242,100,0)" />
+              <stop offset="0.5" stop-color="rgba(190,242,100,0.9)" />
+              <stop offset="1" stop-color="rgba(190,242,100,0)" />
+            </linearGradient>
+          </defs>
+        </svg>
         <div class="hero-content">
           <p class="eyebrow">myfitnessjourney.com</p>
-          <h1>Daksh Avtani's fitness journey</h1>
+          <h1>Daksh Avtani's <span class="accent">fitness journey</span></h1>
           <p class="hero-copy">
             I started training because I struggled with body dysmorphia and did
             not like how I looked. My current goal is to build a shredded
@@ -46,15 +64,15 @@
           <span class="stat-label">Started</span>
         </div>
         <div>
-          <span class="stat-value">63 kg</span>
+          <span class="stat-value" data-count="63" data-suffix=" kg">63 kg</span>
           <span class="stat-label">Starting weight</span>
         </div>
         <div>
-          <span class="stat-value">73.5 kg</span>
+          <span class="stat-value" data-count="73.5" data-decimals="1" data-suffix=" kg">73.5 kg</span>
           <span class="stat-label">Current weight</span>
         </div>
         <div>
-          <span class="stat-value">2 months</span>
+          <span class="stat-value" data-count="2" data-suffix=" months">2 months</span>
           <span class="stat-label">Current goal window</span>
         </div>
       </section>
