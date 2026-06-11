@@ -1,0 +1,70 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Daksh Avtani//Fitness Journey PPL Split//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Push Pull Legs Split - Daksh Avtani
+X-WR-CALDESC:6-day Push/Pull/Legs training split (Mon-Sat) with exercises.
+BEGIN:VEVENT
+UID:ppl-overview-2026@daksh-fitness-journey
+DTSTAMP:20260611T120000Z
+DTSTART;VALUE=DATE:20260621
+DTEND;VALUE=DATE:20260622
+SUMMARY:Push / Pull / Legs split overview
+DESCRIPTION:6-day Push\, Pull\, Legs split. Train Monday to Saturday\, rest Sunday. Runs 21 June to 28 December.\n\nWEEK STRUCTURE\nMon: Push 1\nTue: Pull 1\nWed: Legs 1\nThu: Push 2\nFri: Pull 2\nSat: Legs 2\nSun: Rest\n\nPUSH 1 (chest, shoulders, triceps)\n1. Incline smith machine press\n2. Dumbbell bench press\n3. Pec deck fly\n4. Shoulder press\n5. Straight bar tricep pushdown\n6. Cable lateral raise or lateral raise machine\n7. Skull crushers\n\nPULL 1 (back, biceps, traps, abs)\n1. Preacher curls\n2. Wide-grip lat pulldown\n3. T-bar rows\n4. Incline dumbbell curls\n5. Shrugs\n6. Abs superset: leg raises, cable crunches, hip raises\n\nLEGS 1 (quads, hamstrings, calves)\n1. Leg press or squats\n2. Leg extension\n3. Hamstring curls\n4. Standing calf raises (incl. smith machine option)\n5. Romanian deadlifts\n\nPUSH 2 (chest, shoulders, triceps - variation)\n1. Dumbbell bench press\n2. Incline smith machine press\n3. Decline bench press\n4. Shoulder press\n5. Straight bar tricep pushdown\n6. Cable lateral raise\n7. Skull crushers\n\nPULL 2 (back, biceps, rear delts)\n1. Preacher curls\n2. Wide-grip lat pulldown\n3. Seated cable rows\n4. Cable curls\n5. Rear delts on pec deck fly\n6. Hammer curls\n\nLEGS 2 (optional second leg day)\n1. Leg press or squats\n2. Leg extension\n3. Hamstring curls\n4. Standing calf raises\n5. Romanian deadlifts
+END:VEVENT
+BEGIN:VEVENT
+UID:ppl-push1-2026@daksh-fitness-journey
+DTSTAMP:20260611T120000Z
+DTSTART:20260622T180000
+DTEND:20260622T193000
+RRULE:FREQ=WEEKLY;UNTIL=20261228T235959
+SUMMARY:Push 1 - Chest, shoulders, triceps
+DESCRIPTION:PUSH 1 (chest, shoulders, triceps)\n1. Incline smith machine press\n2. Dumbbell bench press\n3. Pec deck fly\n4. Shoulder press\n5. Straight bar tricep pushdown\n6. Cable lateral raise or lateral raise machine\n7. Skull crushers
+END:VEVENT
+BEGIN:VEVENT
+UID:ppl-pull1-2026@daksh-fitness-journey
+DTSTAMP:20260611T120000Z
+DTSTART:20260623T180000
+DTEND:20260623T193000
+RRULE:FREQ=WEEKLY;UNTIL=20261228T235959
+SUMMARY:Pull 1 - Back, biceps, traps, abs
+DESCRIPTION:PULL 1 (back, biceps, traps, abs)\n1. Preacher curls\n2. Wide-grip lat pulldown\n3. T-bar rows\n4. Incline dumbbell curls\n5. Shrugs\n6. Abs superset: leg raises, cable crunches, hip raises
+END:VEVENT
+BEGIN:VEVENT
+UID:ppl-legs1-2026@daksh-fitness-journey
+DTSTAMP:20260611T120000Z
+DTSTART:20260624T180000
+DTEND:20260624T193000
+RRULE:FREQ=WEEKLY;UNTIL=20261228T235959
+SUMMARY:Legs 1 - Quads, hamstrings, calves
+DESCRIPTION:LEGS 1 (quads, hamstrings, calves)\n1. Leg press or squats\n2. Leg extension\n3. Hamstring curls\n4. Standing calf raises (incl. smith machine option)\n5. Romanian deadlifts
+END:VEVENT
+BEGIN:VEVENT
+UID:ppl-push2-2026@daksh-fitness-journey
+DTSTAMP:20260611T120000Z
+DTSTART:20260625T180000
+DTEND:20260625T193000
+RRULE:FREQ=WEEKLY;UNTIL=20261228T235959
+SUMMARY:Push 2 - Chest, shoulders, triceps (variation)
+DESCRIPTION:PUSH 2 (chest, shoulders, triceps - variation)\n1. Dumbbell bench press\n2. Incline smith machine press\n3. Decline bench press\n4. Shoulder press\n5. Straight bar tricep pushdown\n6. Cable lateral raise\n7. Skull crushers
+END:VEVENT
+BEGIN:VEVENT
+UID:ppl-pull2-2026@daksh-fitness-journey
+DTSTAMP:20260611T120000Z
+DTSTART:20260626T180000
+DTEND:20260626T193000
+RRULE:FREQ=WEEKLY;UNTIL=20261228T235959
+SUMMARY:Pull 2 - Back, biceps, rear delts
+DESCRIPTION:PULL 2 (back, biceps, rear delts)\n1. Preacher curls\n2. Wide-grip lat pulldown\n3. Seated cable rows\n4. Cable curls\n5. Rear delts on pec deck fly\n6. Hammer curls
+END:VEVENT
+BEGIN:VEVENT
+UID:ppl-legs2-2026@daksh-fitness-journey
+DTSTAMP:20260611T120000Z
+DTSTART:20260627T180000
+DTEND:20260627T193000
+RRULE:FREQ=WEEKLY;UNTIL=20261228T235959
+SUMMARY:Legs 2 - Optional second leg day
+DESCRIPTION:LEGS 2 (optional second leg day)\n1. Leg press or squats\n2. Leg extension\n3. Hamstring curls\n4. Standing calf raises\n5. Romanian deadlifts
+END:VEVENT
+END:VCALENDAR
