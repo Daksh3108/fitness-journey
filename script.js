@@ -256,10 +256,39 @@ function countUp(el) {
     return { text: lines.join("\r\n"), file: split.file };
   }
 
-  function download(key) {
-     const isApple =
+  const isApple =
     /iPad|iPhone|iPod/.test(navigator.userAgent) ||
     (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+  // Deliver the .ics across devices:
+  // 1. Desktop + Android: a normal file download (the .ics opens the calendar).
+  // 2. iOS/iPadOS Safari: navigate to the file (download attribute is ignored
+  //    there) so the OS shows "Add All to Calendar".
+  // 3. Anything else / failures: fall back to a data: URI navigation.
+  function deliver(text, filename) {
+    const blob = new Blob([text], { type: "text/calendar;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    const supportsDownload = "download" in a;
+
+    try {
+      if (!isApple && supportsDownload) {
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } else {
+        window.location.href = url;
+      }
+    } catch (err) {
+      window.location.href =
+        "data:text/calendar;charset=utf-8," + encodeURIComponent(text);
+    }
+
+    // Keep the blob URL alive long enough for the download/navigation to start.
+    setTimeout(() => URL.revokeObjectURL(url), 15000);
+  }
 
   function download(key) {
     const result = buildIcs(key);
@@ -268,28 +297,11 @@ function countUp(el) {
       msgEl.style.color = "#e0653f";
       return;
     }
-    const blob = new Blob([result.text], { type: "text/calendar;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
+    deliver(result.text, result.file);
     msgEl.style.color = "";
-
-    if (isApple) {
-      // iOS/iPadOS Safari ignores the download attribute for blobs. Navigating
-      // to a text/calendar resource makes the OS offer "Add All to Calendar".
-      msgEl.textContent = "Opening in your calendar app...";
-      window.location.href = url;
-    } else {
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = result.file;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      msgEl.textContent = `Downloaded ${result.file}. Open it to import into your calendar.`;
-    }
-
-    // Keep the URL alive long enough for the navigation/download to start.
-    setTimeout(() => URL.revokeObjectURL(url), 15000);
-  }
+    msgEl.textContent = isApple
+      ? "Opening in your calendar app. Tap Add All to import the workouts."
+      : `Downloaded ${result.file}. Open the file to add it to your calendar.`;
   }
 
   pplBtn.addEventListener("click", () => download("ppl"));
