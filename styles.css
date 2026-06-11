@@ -843,3 +843,60 @@ h3 {
     align-items: flex-start;
   }
 }
+
+/* ---------- Calendar (.ics) builder form ---------- */
+button.button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.ics-form {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.ics-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.ics-form input,
+.ics-form select {
+  font: inherit;
+  font-size: 15px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 11px 13px;
+  color-scheme: dark;
+}
+
+.ics-form input:focus,
+.ics-form select:focus {
+  outline: none;
+  border-color: var(--lime);
+  box-shadow: 0 0 0 1px var(--lime);
+}
+
+#ics-msg {
+  margin-top: 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  color: var(--muted);
+  min-height: 1px;
+}
+
+@media (max-width: 680px) {
+  .ics-form {
+    grid-template-columns: 1fr 1fr;
+  }
+}
