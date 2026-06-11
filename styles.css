@@ -542,7 +542,7 @@ h3 {
   margin-top: 64px;
 }
 
-/* ---------- Exercise gallery (B&W → color on hover) ---------- */
+/* ---------- Exercise gallery (B&W -> color on hover) ---------- */
 .exercise-gallery {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
