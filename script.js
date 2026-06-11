@@ -257,6 +257,11 @@ function countUp(el) {
   }
 
   function download(key) {
+     const isApple =
+    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+  function download(key) {
     const result = buildIcs(key);
     if (result.error) {
       msgEl.textContent = result.error;
@@ -265,15 +270,26 @@ function countUp(el) {
     }
     const blob = new Blob([result.text], { type: "text/calendar;charset=utf-8" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = result.file;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
     msgEl.style.color = "";
-    msgEl.textContent = `Downloaded ${result.file}. Open it to import into your calendar.`;
+
+    if (isApple) {
+      // iOS/iPadOS Safari ignores the download attribute for blobs. Navigating
+      // to a text/calendar resource makes the OS offer "Add All to Calendar".
+      msgEl.textContent = "Opening in your calendar app...";
+      window.location.href = url;
+    } else {
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = result.file;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      msgEl.textContent = `Downloaded ${result.file}. Open it to import into your calendar.`;
+    }
+
+    // Keep the URL alive long enough for the navigation/download to start.
+    setTimeout(() => URL.revokeObjectURL(url), 15000);
+  }
   }
 
   pplBtn.addEventListener("click", () => download("ppl"));
