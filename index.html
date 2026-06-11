@@ -5,7 +5,609 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Daksh Avtani | My Fitness Journey</title>
     <meta
+      name="description"<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daksh Avtani | My Fitness Journey</title>
+    <meta
       name="description"
+      content="Daksh Avtani's fitness journey, training split, diet, and beginner gym guide."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&family=Oswald:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <header class="site-header">
+      <a class="brand" href="#top"><span class="brand-dot"></span>Daksh Avtani</a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#journey">Journey</a>
+        <a href="#training">Training</a>
+        <a href="#diet">Diet</a>
+        <a href="#beginner">Beginner Guide</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="ghost-title" aria-hidden="true">Fitness Journey</div>
+        <div class="hero-media" aria-hidden="true"></div>
+        <div class="hero-overlay"></div>
+        <svg class="hero-wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0,64 C240,140 480,0 720,48 C960,96 1200,20 1440,72" fill="none" stroke="url(#waveGrad)" stroke-width="2.5" />
+          <defs>
+            <linearGradient id="waveGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="rgba(190,242,100,0)" />
+              <stop offset="0.5" stop-color="rgba(190,242,100,0.9)" />
+              <stop offset="1" stop-color="rgba(190,242,100,0)" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="hero-content">
+          <p class="eyebrow">myfitnessjourney.com</p>
+          <h1>Daksh Avtani's <span class="accent">fitness journey</span></h1>
+          <p class="hero-copy">
+            I started training because I struggled with body dysmorphia and did
+            not like how I looked. My current goal is to build a shredded
+            physique in the next two months.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#journey">See my story</a>
+            <a class="button secondary" href="#beginner">Start gym basics</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats-band" aria-label="Fitness progress stats">
+        <div>
+          <span class="stat-value">Dec 2024</span>
+          <span class="stat-label">Started</span>
+        </div>
+        <div>
+          <span class="stat-value" data-count="63" data-suffix=" kg">63 kg</span>
+          <span class="stat-label">Starting weight</span>
+        </div>
+        <div>
+          <span class="stat-value" data-count="73.5" data-decimals="1" data-suffix=" kg">73.5 kg</span>
+          <span class="stat-label">Current weight</span>
+        </div>
+        <div>
+          <span class="stat-value" data-count="2" data-suffix=" months">2 months</span>
+          <span class="stat-label">Current goal window</span>
+        </div>
+      </section>
+
+      <section class="section" id="journey">
+        <div class="section-heading">
+          <p class="eyebrow">The Story</p>
+          <h2>From skinny fat to a stronger frame</h2>
+        </div>
+        <div class="two-column">
+          <article class="panel">
+            <h3>Why I Started</h3>
+            <p>
+              I started my fitness journey in December 2024 because I had body
+              dysmorphia and did not feel confident about how I looked. The aim
+              was simple: change my physique, build discipline, and become
+              proud of the body I was building.
+            </p>
+          </article>
+          <article class="panel">
+            <h3>What Changed</h3>
+            <p>
+              I began at 63 kg with a skinny-fat body type. I am now 73.5 kg,
+              more muscular, and my frame has changed completely. The journey
+              was not continuous because of JEE and board exams, but I kept
+              coming back.
+            </p>
+          </article>
+        </div>
+        <div class="highlight">
+          <strong>Biggest struggle:</strong> getting a good diet while living in
+          a hostel most of the time.
+        </div>
+      </section>
+
+      <section class="section split-section" id="training">
+        <div class="section-heading">
+          <p class="eyebrow">Training</p>
+          <h2>My workout split</h2>
+        </div>
+        <div class="timeline-grid">
+          <article class="panel">
+            <span class="tag">First 6-8 months</span>
+            <h3>Traditional split</h3>
+            <ul class="clean-list">
+              <li><span>Monday</span> Chest</li>
+              <li><span>Tuesday</span> Back</li>
+              <li><span>Wednesday</span> Shoulders</li>
+              <li><span>Thursday</span> Arms</li>
+              <li><span>Friday</span> Legs</li>
+            </ul>
+          </article>
+          <article class="panel">
+            <span class="tag">Current phase</span>
+            <h3>Push, pull, legs</h3>
+            <p>
+              After building the habit with a traditional split, I moved to a
+              push-pull-legs structure. This helps me train muscle groups more
+              efficiently while still recovering properly.
+            </p>
+            <ul class="clean-list compact">
+              <li><span>Push</span> Chest, shoulders, triceps</li>
+              <li><span>Pull</span> Back, biceps, rear delts</li>
+              <li><span>Legs</span> Quads, hamstrings, glutes, calves</li>
+            </ul>
+          </article>
+        </div>
+        <div class="training-note">
+          <h3>Add the split to your calendar</h3>
+          <p>
+            Download either split as a calendar file (.ics) and import it into
+            Google Calendar, Apple Calendar, or Outlook. Every training day comes
+            with its exercise list built in, scheduled from 21 June to 28
+            December. The push-pull-legs split runs Monday to Saturday; the
+            traditional 5-day split runs Monday to Friday.
+          </p>
+          <p style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap">
+            <a class="button primary" href="assets/ppl-split.ics" download
+              >Download PPL calendar</a
+            >
+            <a
+              class="button secondary"
+              href="assets/traditional-split.ics"
+              download
+              >Download 5-day split calendar</a
+            >
+          </p>
+        </div>
+        <div class="highlight">
+          <strong>My rule:</strong> you do not need five different exercises
+          for the same muscle in one day. More work is not always better. The
+          goal is enough hard sets, clean form, and recovery so the muscle can
+          grow before you train it hard again.
+        </div>
+        <div class="routine-grid">
+          <article class="routine-card">
+            <span class="tag">Push 1</span>
+            <h3>Chest, shoulders, triceps</h3>
+            <ol class="number-list">
+              <li>Incline smith machine press</li>
+              <li>Dumbbell bench press</li>
+              <li>Pec deck fly</li>
+              <li>Shoulder press</li>
+              <li>Straight bar tricep pushdown</li>
+              <li>Cable lateral raise or lateral raise machine</li>
+              <li>Skull crushers</li>
+            </ol>
+          </article>
+          <article class="routine-card">
+            <span class="tag">Pull 1</span>
+            <h3>Back, biceps, traps, abs</h3>
+            <ol class="number-list">
+              <li>Preacher curls</li>
+              <li>Wide-grip lat pulldown</li>
+              <li>T-bar rows</li>
+              <li>Incline dumbbell curls</li>
+              <li>Shrugs</li>
+              <li>Abs superset: leg raises, cable crunches, hip raises</li>
+            </ol>
+          </article>
+          <article class="routine-card">
+            <span class="tag">Legs 1</span>
+            <h3>Quads, hamstrings, calves</h3>
+            <ol class="number-list">
+              <li>Leg press or squats</li>
+              <li>Leg extension</li>
+              <li>Hamstring curls</li>
+              <li>Standing calf raises, including smith machine option</li>
+              <li>Romanian deadlifts for hamstrings and lower back</li>
+            </ol>
+          </article>
+          <article class="routine-card">
+            <span class="tag">Push 2</span>
+            <h3>Small changes, same base</h3>
+            <p>
+              Change the order: start with dumbbell bench press, then incline
+              smith machine press. Use decline bench press instead of pec deck
+              fly. Keep shoulder press, tricep pushdown, lateral raises, and
+              skull crushers.
+            </p>
+          </article>
+          <article class="routine-card">
+            <span class="tag">Pull 2</span>
+            <h3>Rear delts and arms</h3>
+            <p>
+              Replace T-bar rows with seated cable rows. Replace shrugs with
+              rear delts on the pec deck fly. Replace incline dumbbell curls
+              with cable curls, and add hammer curls. If one arm is stronger,
+              use dumbbells or one-arm machine work.
+            </p>
+          </article>
+          <article class="routine-card">
+            <span class="tag">Legs 2</span>
+            <h3>Optional second leg day</h3>
+            <p>
+              The workout is mostly the same. I usually hit legs once a week,
+              but a second leg day is useful when you have time or want to make
+              a bad week feel productive.
+            </p>
+          </article>
+        </div>
+        <div class="training-note">
+          <h3>Superset, in beginner language</h3>
+          <p>
+            A superset means doing two or more exercises back-to-back with no
+            break between them. For abs, do leg raises, cable crunches, and hip
+            raises continuously, then rest for 2-3 minutes. Repeat that two
+            more times.
+          </p>
+        </div>
+        <div class="training-note">
+          <h3>Training close to failure</h3>
+          <p>
+            For muscle growth, your working sets need to be hard. Training to
+            failure means reaching the point where you cannot complete another
+            clean rep with the same form. For a beginner, the practical goal is
+            to stop when you have 0-2 clean reps left. Go to true failure more
+            often on safer machine or isolation exercises like curls, lateral
+            raises, pushdowns, and leg extensions, and be more careful on heavy
+            presses, squats, and Romanian deadlifts.
+          </p>
+        </div>
+        <div class="section-heading small-heading">
+          <p class="eyebrow">Exercise Demos</p>
+          <h2>Video-first exercise library</h2>
+        </div>
+        <div class="exercise-gallery">
+          <figure>
+            <video controls muted preload="metadata" aria-label="Incline press exercise video">
+              <source src="https://commons.wikimedia.org/wiki/Special:FilePath/Incline%20press%20-%20exercise%20demonstration%20video.webm" type="video/webm" />
+            </video>
+            <figcaption>Incline smith press</figcaption>
+          </figure>
+          <figure>
+            <video controls muted preload="metadata" aria-label="Dumbbell bench press exercise video">
+              <source src="https://commons.wikimedia.org/wiki/Special:FilePath/Video%20showing%20how%20to%20perform%20the%20dumbbell%20bench%20press%20and%20the%20dumbbell%20incline%20bench%20press.webm" type="video/webm" />
+            </video>
+            <figcaption>Dumbbell bench press</figcaption>
+          </figure>
+          <figure>
+            <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Girl%20doing%20chest%20press%20machine%20exercise.jpg" alt="Human doing a chest machine exercise" />
+            <figcaption>Pec deck fly</figcaption>
+          </figure>
+          <figure>
+            <video controls muted preload="metadata" aria-label="Shoulder press exercise video">
+              <source src="https://commons.wikimedia.org/wiki/Special:FilePath/Shoulder%20press%20-%20exercise%20demonstration%20video.webm" type="video/webm" />
+            </video>
+            <figcaption>Shoulder press</figcaption>
+          </figure>
+          <figure>
+            <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Cable%20overhead%20biceps%20extension%2C%20blonde%20girl%20is%20exercising%20in%20the%20gym.jpg" alt="Human doing a cable arm exercise" />
+            <figcaption>Tricep pushdown</figcaption>
+          </figure>
+          <figure>
+            <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Fitness%20Shoulder%20Exercise.jpg" alt="Human doing lateral raise exercise" />
+            <figcaption>Lateral raises</figcaption>
+          </figure>
+          <figure>
+            <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Girl%20double%20dumbbell%20tricep%20extension.jpg" alt="Human doing a triceps extension exercise" />
+            <figcaption>Skull crushers</figcaption>
+          </figure>
+          <figure>
+            <video controls muted preload="metadata" aria-label="Bar curl exercise video">
+              <source src="https://commons.wikimedia.org/wiki/Special:FilePath/Video%20of%20EZ%20Bar%20Curl%20and%20Straight%20Bar%20Curl.webm" type="video/webm" />
+            </video>
+            <figcaption>Preacher curls</figcaption>
+          </figure>
+          <figure>
+            <video controls muted preload="metadata" aria-label="Lat pulldown exercise video">
+              <source src="https://commons.wikimedia.org/wiki/Special:FilePath/Common%20Lat%20Pulldown%20Mistakes.webm" type="video/webm" />
+            </video>
+            <figcaption>Wide-grip lat pulldown</figcaption>
+          </figure>
+          <figure>
+            <video controls muted preload="metadata" aria-label="T-bar row exercise video">
+              <source src="https://commons.wikimedia.org/wiki/Special:FilePath/How%20to%20do%20a%20T-Bar%20Row%20in%20strength%20training%20workouts.webm" type="video/webm" />
+            </video>
+            <figcaption>T-bar rows</figcaption>
+          </figure>
+          <figure>
+            <video controls muted preload="metadata" aria-label="Seated row exercise video">
+              <source src="https://commons.wikimedia.org/wiki/Special:FilePath/Muscle%20Strengthening%20at%20the%20Gym%20-%20Row%20Machine.webm" type="video/webm" />
+            </video>
+            <figcaption>Seated rows</figcaption>
+          </figure>
+          <figure>
+            <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Girl%20doing%20double%20dumbbell%20bicep%20curl.jpg" alt="Human doing dumbbell bicep curls" />
+            <figcaption>Incline dumbbell curls</figcaption>
+          </figure>
+          <figure>
+            <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/World%20Gym%20workout%20%28Unsplash%29.jpg" alt="Human training traps and upper body in a gym" />
+            <figcaption>Shrugs</figcaption>
+          </figure>
+          <figure>
+            <video controls muted preload="metadata" aria-label="Leg raises exercise video">
+              <source src="https://commons.wikimedia.org/wiki/Special:FilePath/Leg%20raises%20-%20exercise%20demonstration%20video.webm" type="video/webm" />
+            </video>
+            <figcaption>Leg raises</figcaption>
+          </figure>
+          <figure>
+            <video controls muted preload="metadata" aria-label="Hanging crunch exercise video">
+              <source src="https://commons.wikimedia.org/wiki/Special:FilePath/Hanging%20crunches%20-%20exercise%20demonstration%20video.webm" type="video/webm" />
+            </video>
+            <figcaption>Cable crunch pattern</figcaption>
+          </figure>
+          <figure>
+            <video controls muted preload="metadata" aria-label="Bench press exercise video">
+              <source src="https://commons.wikimedia.org/wiki/Special:FilePath/Bench%20press%20-%20exercise%20demonstration%20video.webm" type="video/webm" />
+            </video>
+            <figcaption>Decline bench press</figcaption>
+          </figure>
+          <figure>
+            <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Girl%20exercising%20shoulders.jpg" alt="Human training shoulders in a gym" />
+            <figcaption>Rear delts</figcaption>
+          </figure>
+          <figure>
+            <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Girl%20doing%20cable%20bicep%20curl%20exercise.jpg" alt="Human doing cable bicep curl exercise" />
+            <figcaption>Cable curls</figcaption>
+          </figure>
+          <figure>
+            <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Girl%20doing%20double%20dumbbell%20bicep%20curl.jpg" alt="Human doing dumbbell curls" />
+            <figcaption>Hammer curls</figcaption>
+          </figure>
+          <figure>
+            <video controls muted preload="metadata" aria-label="Leg press exercise video">
+              <source src="https://commons.wikimedia.org/wiki/Special:FilePath/Hip%20Sled%20-%20How%20to%20perform%20a%2045%20degree%20leg%20press.webm" type="video/webm" />
+            </video>
+            <figcaption>Leg press</figcaption>
+          </figure>
+          <figure>
+            <video controls muted preload="metadata" aria-label="Squat exercise video">
+              <source src="https://commons.wikimedia.org/wiki/Special:FilePath/Squat%20-%20exercise%20demonstration%20video.webm" type="video/webm" />
+            </video>
+            <figcaption>Squats</figcaption>
+          </figure>
+          <figure>
+            <video controls muted preload="metadata" aria-label="Leg extension exercise video">
+              <source src="https://commons.wikimedia.org/wiki/Special:FilePath/Muscle%20Strengthening%20at%20the%20Gym%20-%20Leg%20Extension.webm" type="video/webm" />
+            </video>
+            <figcaption>Leg extension</figcaption>
+          </figure>
+          <figure>
+            <video controls muted preload="metadata" aria-label="Leg curl exercise video">
+              <source src="https://commons.wikimedia.org/wiki/Special:FilePath/Muscle%20Strengthening%20at%20the%20Gym%20-%20Leg%20Curl.webm" type="video/webm" />
+            </video>
+            <figcaption>Hamstring curls</figcaption>
+          </figure>
+          <figure>
+            <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/DumbbellStandingCalfRaise.JPG" alt="Human doing standing calf raise exercise" />
+            <figcaption>Standing calf raises</figcaption>
+          </figure>
+          <figure>
+            <video controls muted preload="metadata" aria-label="Deadlift exercise video">
+              <source src="https://commons.wikimedia.org/wiki/Special:FilePath/Deadlift%20-%20exercise%20demonstration%20video.webm" type="video/webm" />
+            </video>
+            <figcaption>Romanian deadlifts</figcaption>
+          </figure>
+          <figure>
+            <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Crunch.JPG" alt="Human doing a core exercise on the floor" />
+            <figcaption>Hip raises</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section" id="diet">
+        <div class="section-heading">
+          <p class="eyebrow">Diet</p>
+          <h2>How I eat while cutting</h2>
+        </div>
+        <div class="training-note">
+          <h3>Step 1: find your calorie target</h3>
+          <p>
+            Diet starts with knowing your numbers. Use this free TDEE
+            calculator to estimate how many calories you need to cut, maintain,
+            or bulk based on your age, gender, height, weight, and activity
+            level. It uses the Mifflin-St Jeor formula (and Katch-McArdle if you
+            know your body fat), which research rates as the most accurate for
+            most people. Treat the result as a starting point, then adjust based
+            on your weight trend over 2-3 weeks.
+          </p>
+          <p style="margin-top: 16px">
+            <a
+              class="button primary"
+              href="https://www.calculator.net/tdee-calculator.html"
+              target="_blank"
+              rel="noreferrer"
+              >Open the calorie calculator</a
+            >
+          </p>
+        </div>
+        <div class="meal-grid">
+          <article class="meal-card">
+            <span class="meal-time">Breakfast</span>
+            <h3>High-protein oatmeal</h3>
+            <p>
+              Oats based on calorie requirement, 350-500 ml milk, peanut
+              butter, chocolate protein powder, and a spoon of honey if needed.
+              This gives around 40-50 g protein.
+            </p>
+          </article>
+          <article class="meal-card">
+            <span class="meal-time">Lunch</span>
+            <h3>Roti, rice, and vegetables</h3>
+            <p>
+              Roti, rice, and vegetables based on the current calorie goal.
+              During a cut, I keep it lighter and usually eat only one roti.
+            </p>
+          </article>
+          <article class="meal-card">
+            <span class="meal-time">Dinner</span>
+            <h3>Chicken or omelette</h3>
+            <p>
+              At home, I eat around 300 g chicken breast. In hostel, I usually
+              eat a 5-6 egg omelette. Chicken gives more protein, so hostel
+              meals need extra protein support. You can add rice, roti, and
+              vegetables with your protein source based on your calorie goal.
+            </p>
+          </article>
+        </div>
+        <div class="note-grid">
+          <div class="note">
+            <h3>Supplements I Use</h3>
+            <p>
+              I started protein powder in April 2025 and creatine in February
+              2026.
+            </p>
+          </div>
+          <div class="note">
+            <h3>Creatine For Beginners</h3>
+            <p>
+              Creatine helps your muscles produce quick energy during hard
+              sets. In simple words, it can help you lift a little better,
+              recover between sets, and look fuller because your muscles hold
+              more water. A beginner can wait 3-4 months, build consistency
+              first, then add it if diet and training are already in place.
+            </p>
+          </div>
+        </div>
+        <div class="diet-rules">
+          <article class="note">
+            <h3>Calories and macros</h3>
+            <p>
+              Your body mostly responds to total calories, protein, carbs, fats,
+              and consistency. A burger will not automatically stop muscle
+              growth if your calories and protein are on target, but whole foods
+              usually make it easier to get vitamins, minerals, fiber, and
+              fullness without overeating. If you are not lactose intolerant,
+              high-protein milk can also help you reach your protein goal.
+            </p>
+          </article>
+          <article class="note">
+            <h3>Hit protein through the day</h3>
+            <p>
+              Do not depend on only one meal for protein. Spread protein across
+              breakfast, lunch, dinner, and snacks while staying inside the
+              calories you need for cutting, maintaining, or bulking. The basic
+              target is simple: enough protein to recover and enough calories to
+              match your goal.
+            </p>
+          </article>
+          <article class="note">
+            <h3>Water and sleep</h3>
+            <p>
+              Drink water through the day and during training whenever you need
+              it. Around 4 liters can make sense for an active guy, but adjust
+              for heat, sweat, body size, and thirst. Sleep 7-8 hours because
+              recovery is when your training actually turns into progress.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section beginner-section" id="beginner">
+        <div class="section-heading">
+          <p class="eyebrow">For A Friend</p>
+          <h2>Beginner gym guide</h2>
+        </div>
+        <div class="guide-grid">
+          <article class="panel">
+            <h3>First 12 weeks</h3>
+            <ol class="number-list">
+              <li>Week 1: do full-body workouts 4-5 days with very light weights to learn form.</li>
+              <li>Weeks 2-4: train 3-5 days per week and repeat the same basic movements.</li>
+              <li>Weeks 5-8: start pushing harder sets while keeping technique clean.</li>
+              <li>Weeks 9-12: track lifts, body weight, food, sleep, and progress photos.</li>
+              <li>Abs can be trained 2-3 times per week if you have time.</li>
+            </ol>
+          </article>
+          <article class="panel">
+            <h3>Mistakes to avoid</h3>
+            <ul class="check-list">
+              <li>Changing workout plans every week.</li>
+              <li>Only training chest and arms.</li>
+              <li>Not eating enough protein.</li>
+              <li>Skipping sleep and recovery.</li>
+              <li>Lifting heavy with bad form.</li>
+            </ul>
+          </article>
+        </div>
+        <div class="beginner-deep-dive">
+          <article class="panel">
+            <h3>Progressive overload</h3>
+            <p>
+              Progressive overload means making the exercise slightly harder
+              over time. The easiest way is to add one rep the next time you do
+              the same exercise. When all sets reach your target reps with clean
+              form, increase the weight.
+            </p>
+            <p>
+              Example: if dumbbell bench press is 3 sets of 12 reps and you can
+              do 35 kg dumbbells for all 3 sets, increase only the first set to
+              40 kg next time. You may get 5-6 reps. Then use 35 kg for sets 2
+              and 3. Stay there until set 1 reaches 12 reps at 40 kg. After
+              that, move set 2 to 40 kg. Do the same for set 3.
+            </p>
+          </article>
+          <article class="panel">
+            <h3>Hypertrophy</h3>
+            <p>
+              Hypertrophy simply means muscle growth. My personal range is 3
+              sets around 12 reps for most exercises. Pick a weight that lets
+              you feel the target muscle, control the rep, and finish close to
+              failure without breaking form.
+            </p>
+            <p>
+              Apply this to every exercise: write down your weight and reps,
+              then try to beat last time by one rep or a little more weight.
+              Small improvements repeated for months create the physique change.
+            </p>
+          </article>
+        </div>
+        <div class="training-note">
+          <h3>Beginner safety note</h3>
+          <p>
+            If a movement causes sharp pain, stop and ask a trainer to check
+            your form. If you have an injury or medical condition, get proper
+            advice before copying any plan.
+          </p>
+        </div>
+      </section>
+
+      <section class="section sources-section" id="sources">
+        <div class="section-heading">
+          <p class="eyebrow">Fact Check</p>
+          <h2>Sources behind the beginner advice</h2>
+        </div>
+        <div class="sources-list">
+          <a href="https://jissn.biomedcentral.com/articles/10.1186/s12970-017-0177-8" target="_blank" rel="noreferrer">ISSN protein and exercise position stand</a>
+          <a href="https://www.cdc.gov/sleep/about/index.html" target="_blank" rel="noreferrer">CDC adult sleep guidance</a>
+          <a href="https://www.mayoclinic.org/drugs-supplements-creatine/art-20347591" target="_blank" rel="noreferrer">Mayo Clinic creatine overview</a>
+          <a href="https://ods.od.nih.gov/factsheets/ExerciseAndAthleticPerformance-HealthProfessional/" target="_blank" rel="noreferrer">NIH exercise supplement fact sheet</a>
+          <a href="https://www.acefitness.org/resources/pros/expert-articles/4931/weight-lifting-tempo-amp-sets-how-to-select-the-right-sets-for-your-clients/" target="_blank" rel="noreferrer">ACE progression and beginner lifting guidance</a>
+          <a href="https://www.nationalacademies.org/read/10925/chapter/6" target="_blank" rel="noreferrer">National Academies water intake reference</a>
+          <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9068575/" target="_blank" rel="noreferrer">Systematic review on training to failure</a>
+          <a href="https://www.mayoclinic.org/healthy-lifestyle/fitness/multimedia/seated-row/vid-20084688" target="_blank" rel="noreferrer">Mayo Clinic seated row guide</a>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      <p>Daksh Avtani | My Fitness Journey</p>
+      <a href="#top">Back to top</a>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
       content="Daksh Avtani's fitness journey, training split, diet, and beginner gym guide."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
