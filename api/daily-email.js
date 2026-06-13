@@ -1,18 +1,22 @@
 // api/daily-email.js
-// Sends a "today's workout" email every morning via Resend.
+// Sends a "today's workout" email every morning through GMAIL (SMTP).
 //
-// HOW IT RUNS: Vercel Cron (configured in vercel.json) calls this endpoint once
-// a day at 7:00 AM IST. It works out today's weekday, looks up the workout for
-// BOTH splits (PPL + traditional 5-day), builds an email, and sends it through
-// Resend to everyone listed in EMAIL_TO.
+// WHY GMAIL: sending through your own Gmail account lets you email ANYONE
+// (including your friend) WITHOUT owning/verifying a domain — Google already
+// trusts your account. Vercel Cron (vercel.json) calls this once a day at
+// 7:00 AM IST.
 //
-// SECRETS (set these as Environment Variables in Vercel — never in code):
-//   RESEND_API_KEY  -> your Resend API key
-//   EMAIL_FROM      -> verified sender, e.g. "Daksh Fitness <goals@myfitnessjourney.com>"
-//                      (for first tests you can use "onboarding@resend.dev")
-//   EMAIL_TO        -> comma-separated recipients, e.g. "me@gmail.com,friend@gmail.com"
-//   CRON_SECRET     -> any random string. Vercel auto-sends it so only the cron
-//                      (or you, with the secret) can trigger a send.
+// SECRETS (set as Environment Variables in Vercel — never in code):
+//   GMAIL_USER          -> your full Gmail address, e.g. "you@gmail.com"
+//   GMAIL_APP_PASSWORD  -> a 16-character Google "App Password" (NOT your normal
+//                          password). Requires 2-Step Verification turned on.
+//   EMAIL_TO            -> comma-separated recipients, e.g. "you@gmail.com,friend@gmail.com"
+//   EMAIL_FROM          -> (optional) display name, e.g. "Daksh Fitness".
+//                          Defaults to your Gmail address.
+//   CRON_SECRET         -> any random string. Vercel auto-sends it so only the
+//                          cron (or you, with the secret) can trigger a send.
+
+const nodemailer = require("nodemailer");
 
 const ABS = "Abs superset: leg raises, cable crunches, hip raises";
 
@@ -60,7 +64,7 @@ function block(name, workout) {
 }
 
 module.exports = async (req, res) => {
-  // Security: only allow the Vercel cron (or you, with the secret) to trigger a send.
+  // Security: only the Vercel cron (or you, with the secret) may trigger a send.
   const secret = process.env.CRON_SECRET;
   if (secret) {
     const auth = req.headers.authorization || "";
@@ -70,12 +74,13 @@ module.exports = async (req, res) => {
     }
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.EMAIL_FROM;
+  const user = process.env.GMAIL_USER;
+  const pass = process.env.GMAIL_APP_PASSWORD;
   const to = (process.env.EMAIL_TO || "").split(",").map((s) => s.trim()).filter(Boolean);
+  const fromName = process.env.EMAIL_FROM || "Daksh's Fitness Journey";
 
-  if (!apiKey || !from || to.length === 0) {
-    console.error("Missing RESEND_API_KEY, EMAIL_FROM, or EMAIL_TO.");
+  if (!user || !pass || to.length === 0) {
+    console.error("Missing GMAIL_USER, GMAIL_APP_PASSWORD, or EMAIL_TO.");
     return res.status(500).json({ error: "Email is not configured yet." });
   }
 
@@ -90,27 +95,24 @@ module.exports = async (req, res) => {
   </div>`;
 
   try {
-    const r = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
-      body: JSON.stringify({
-        from,
-        to,
-        subject: `🏋️ ${weekday}'s workout — PPL & 5-day split`,
-        html,
-      }),
+    // Gmail SMTP. App Password required (with 2-Step Verification enabled).
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: { user, pass },
     });
 
-    if (!r.ok) {
-      const detail = await r.text();
-      console.error("Resend error:", r.status, detail);
-      return res.status(502).json({ error: "Email service rejected the send.", detail });
-    }
+    const info = await transporter.sendMail({
+      from: `${fromName} <${user}>`,
+      to,
+      subject: `🏋️ ${weekday}'s workout — PPL & 5-day split`,
+      html,
+    });
 
-    const data = await r.json();
-    return res.status(200).json({ ok: true, sent_to: to, id: data.id });
+    return res.status(200).json({ ok: true, sent_to: to, id: info.messageId });
   } catch (err) {
     console.error("daily-email crashed:", err);
-    return res.status(500).json({ error: "Something went wrong sending the email." });
+    return res.status(502).json({ error: "Could not send the email.", detail: String(err && err.message || err) });
   }
 };
