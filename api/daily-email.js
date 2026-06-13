@@ -1,40 +1,8 @@
 // api/daily-email.js
-// Sends a "today's workout" email every morning through GMAIL (SMTP).
-//
-// WHY GMAIL: sending through your own Gmail account lets you email ANYONE
-// (including your friend) WITHOUT owning/verifying a domain — Google already
-// trusts your account. Vercel Cron (vercel.json) calls this once a day at
-// 7:00 AM IST.
-//
-// SECRETS (set as Environment Variables in Vercel — never in code):
-//   GMAIL_USER          -> your full Gmail address, e.g. "you@gmail.com"
-//   GMAIL_APP_PASSWORD  -> a 16-character Google "App Password" (NOT your normal
-//                          password). Requires 2-Step Verification turned on.
-//   EMAIL_TO            -> comma-separated recipients, e.g. "you@gmail.com,friend@gmail.com"
-//   EMAIL_FROM          -> (optional) display name, e.g. "Daksh Fitness".
-//                          Defaults to your Gmail address.
-//   CRON_SECRET         -> any random string. Vercel auto-sends it so only the
-//                          cron (or you, with the secret) can trigger a send.
-
 const nodemailer = require("nodemailer");
-// Sends a "today's workout" email every morning via Resend.
-//
-// HOW IT RUNS: Vercel Cron (configured in vercel.json) calls this endpoint once
-// a day at 7:00 AM IST. It works out today's weekday, looks up the workout for
-// BOTH splits (PPL + traditional 5-day), builds an email, and sends it through
-// Resend to everyone listed in EMAIL_TO.
-//
-// SECRETS (set these as Environment Variables in Vercel — never in code):
-//   RESEND_API_KEY  -> your Resend API key
-//   EMAIL_FROM      -> verified sender, e.g. "Daksh Fitness <goals@myfitnessjourney.com>"
-//                      (for first tests you can use "onboarding@resend.dev")
-//   EMAIL_TO        -> comma-separated recipients, e.g. "me@gmail.com,friend@gmail.com"
-//   CRON_SECRET     -> any random string. Vercel auto-sends it so only the cron
-//                      (or you, with the secret) can trigger a send.
 
 const ABS = "Abs superset: leg raises, cable crunches, hip raises";
 
-// Workout for each weekday (0 = Sunday ... 6 = Saturday).
 const PPL = {
   1: { title: "Push 1 — Chest, shoulders, triceps", items: ["Incline smith machine press", "Dumbbell bench press", "Pec deck fly", "Shoulder press", "Straight bar tricep pushdown", "Cable lateral raise or lateral raise machine", "Skull crushers"] },
   2: { title: "Pull 1 — Back, biceps, traps, abs", items: ["Preacher curls", "Wide-grip lat pulldown", "T-bar rows", "Incline dumbbell curls", "Shrugs", ABS] },
@@ -52,7 +20,6 @@ const TRAD = {
   5: { title: "Legs", items: ["Squats", "Leg press", "Leg extension", "Hamstring curls", "Romanian deadlifts", "Standing calf raises"] },
 };
 
-// Which weekday is it right now in India (IST), regardless of server timezone?
 function istParts() {
   const now = new Date();
   const weekday = new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Kolkata", weekday: "long" }).format(now);
@@ -78,8 +45,6 @@ function block(name, workout) {
 }
 
 module.exports = async (req, res) => {
-  // Security: only the Vercel cron (or you, with the secret) may trigger a send.
-  // Security: only allow the Vercel cron (or you, with the secret) to trigger a send.
   const secret = process.env.CRON_SECRET;
   if (secret) {
     const auth = req.headers.authorization || "";
@@ -96,13 +61,7 @@ module.exports = async (req, res) => {
 
   if (!user || !pass || to.length === 0) {
     console.error("Missing GMAIL_USER, GMAIL_APP_PASSWORD, or EMAIL_TO.");
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.EMAIL_FROM;
-  const to = (process.env.EMAIL_TO || "").split(",").map((s) => s.trim()).filter(Boolean);
-
-  if (!apiKey || !from || to.length === 0) {
-    console.error("Missing RESEND_API_KEY, EMAIL_FROM, or EMAIL_TO.");
-    return res.status(500).json({ error: "Email is not configured yet." });
+    return res.status(500).json({ error: "Email is not configured. Set GMAIL_USER, GMAIL_APP_PASSWORD, and EMAIL_TO in Vercel." });
   }
 
   const { dow, weekday, dateStr } = istParts();
@@ -116,7 +75,6 @@ module.exports = async (req, res) => {
   </div>`;
 
   try {
-    // Gmail SMTP. App Password required (with 2-Step Verification enabled).
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 465,
@@ -135,27 +93,5 @@ module.exports = async (req, res) => {
   } catch (err) {
     console.error("daily-email crashed:", err);
     return res.status(502).json({ error: "Could not send the email.", detail: String(err && err.message || err) });
-    const r = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
-      body: JSON.stringify({
-        from,
-        to,
-        subject: `🏋️ ${weekday}'s workout — PPL & 5-day split`,
-        html,
-      }),
-    });
-
-    if (!r.ok) {
-      const detail = await r.text();
-      console.error("Resend error:", r.status, detail);
-      return res.status(502).json({ error: "Email service rejected the send.", detail });
-    }
-
-    const data = await r.json();
-    return res.status(200).json({ ok: true, sent_to: to, id: data.id });
-  } catch (err) {
-    console.error("daily-email crashed:", err);
-    return res.status(500).json({ error: "Something went wrong sending the email." });
   }
 };
