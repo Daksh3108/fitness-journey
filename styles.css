@@ -316,6 +316,14 @@ h3 {
   color: var(--lime);
 }
 
+}
+
+.button.secondary:hover {
+  transform: translateY(-3px);
+  border-color: rgba(196, 246, 74, 0.5);
+  color: var(--lime);
+}
+
 /* ---------- Stats band (glass pills) ---------- */
 .stats-band {
   width: min(var(--max), calc(100% - 36px));
@@ -740,6 +748,31 @@ h3 {
   letter-spacing: 1px;
   font-size: 13px;
   color: var(--lime);
+}
+
+/* ---------- Scroll reveal ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.in-view {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  h1 .accent {
+    animation: none;
+  }
+}
+
 }
 
 /* ---------- Scroll reveal ---------- */
