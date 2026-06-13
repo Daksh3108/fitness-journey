@@ -1,0 +1,136 @@
+diff --git a/api/daily-email.js b/api/daily-email.js
+new file mode 100644
+index 0000000..c785633
+--- /dev/null
++++ b/api/daily-email.js
+@@ -0,0 +1,116 @@
++// api/daily-email.js
++// Sends a "today's workout" email every morning via Resend.
++//
++// HOW IT RUNS: Vercel Cron (configured in vercel.json) calls this endpoint once
++// a day at 7:00 AM IST. It works out today's weekday, looks up the workout for
++// BOTH splits (PPL + traditional 5-day), builds an email, and sends it through
++// Resend to everyone listed in EMAIL_TO.
++//
++// SECRETS (set these as Environment Variables in Vercel — never in code):
++//   RESEND_API_KEY  -> your Resend API key
++//   EMAIL_FROM      -> verified sender, e.g. "Daksh Fitness <goals@myfitnessjourney.com>"
++//                      (for first tests you can use "onboarding@resend.dev")
++//   EMAIL_TO        -> comma-separated recipients, e.g. "me@gmail.com,friend@gmail.com"
++//   CRON_SECRET     -> any random string. Vercel auto-sends it so only the cron
++//                      (or you, with the secret) can trigger a send.
++
++const ABS = "Abs superset: leg raises, cable crunches, hip raises";
++
++// Workout for each weekday (0 = Sunday ... 6 = Saturday).
++const PPL = {
++  1: { title: "Push 1 — Chest, shoulders, triceps", items: ["Incline smith machine press", "Dumbbell bench press", "Pec deck fly", "Shoulder press", "Straight bar tricep pushdown", "Cable lateral raise or lateral raise machine", "Skull crushers"] },
++  2: { title: "Pull 1 — Back, biceps, traps, abs", items: ["Preacher curls", "Wide-grip lat pulldown", "T-bar rows", "Incline dumbbell curls", "Shrugs", ABS] },
++  3: { title: "Legs 1 — Quads, hamstrings, calves", items: ["Leg press or squats", "Leg extension", "Hamstring curls", "Standing calf raises (incl. smith machine option)", "Romanian deadlifts"] },
++  4: { title: "Push 2 — Chest, shoulders, triceps (variation)", items: ["Dumbbell bench press", "Incline smith machine press", "Decline bench press", "Shoulder press", "Straight bar tricep pushdown", "Cable lateral raise", "Skull crushers"] },
++  5: { title: "Pull 2 — Back, biceps, rear delts", items: ["Preacher curls", "Wide-grip lat pulldown", "Seated cable rows", "Cable curls", "Rear delts on pec deck fly", "Hammer curls"] },
++  6: { title: "Legs 2 — Optional second leg day", items: ["Leg press or squats", "Leg extension", "Hamstring curls", "Standing calf raises", "Romanian deadlifts"] },
++};
++
++const TRAD = {
++  1: { title: "Chest (+ abs)", items: ["Incline smith machine press", "Flat dumbbell bench press", "Decline bench press", "Pec deck fly", "Cable crossover", ABS] },
++  2: { title: "Back (+ abs)", items: ["Deadlifts", "Wide-grip lat pulldown", "T-bar rows", "Seated cable rows", "Shrugs", ABS] },
++  3: { title: "Shoulders (+ abs)", items: ["Seated shoulder press", "Dumbbell lateral raises", "Cable lateral raises", "Rear delts on pec deck fly", "Face pulls", ABS] },
++  4: { title: "Arms", items: ["Preacher curls", "Incline dumbbell curls", "Hammer curls", "Straight bar tricep pushdown", "Skull crushers", "Overhead tricep extension"] },
++  5: { title: "Legs", items: ["Squats", "Leg press", "Leg extension", "Hamstring curls", "Romanian deadlifts", "Standing calf raises"] },
++};
++
++// Which weekday is it right now in India (IST), regardless of server timezone?
++function istParts() {
++  const now = new Date();
++  const weekday = new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Kolkata", weekday: "long" }).format(now);
++  const dateStr = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Kolkata", day: "numeric", month: "long", year: "numeric" }).format(now);
++  const map = { Sunday: 0, Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6 };
++  return { dow: map[weekday], weekday, dateStr };
++}
++
++function block(name, workout) {
++  if (!workout) {
++    return `<div style="margin:0 0 18px;padding:16px 18px;background:#11160f;border:1px solid #1f2a18;border-radius:14px">
++      <div style="font:700 13px Arial,sans-serif;color:#c4f64a;text-transform:uppercase;letter-spacing:.5px">${name}</div>
++      <div style="font:600 16px Arial,sans-serif;color:#f2f5ef;margin-top:6px">Rest &amp; recovery day 💤</div>
++      <div style="font:400 14px Arial,sans-serif;color:#9aa394;margin-top:4px">Eat well, hydrate, and sleep 7–8 hours.</div>
++    </div>`;
++  }
++  const lis = workout.items.map((i) => `<li style="margin:4px 0">${i}</li>`).join("");
++  return `<div style="margin:0 0 18px;padding:16px 18px;background:#11160f;border:1px solid #1f2a18;border-radius:14px">
++    <div style="font:700 13px Arial,sans-serif;color:#c4f64a;text-transform:uppercase;letter-spacing:.5px">${name}</div>
++    <div style="font:600 16px Arial,sans-serif;color:#f2f5ef;margin:6px 0 8px">${workout.title}</div>
++    <ul style="font:400 14px/1.6 Arial,sans-serif;color:#cdd4c6;margin:0;padding-left:20px">${lis}</ul>
++  </div>`;
++}
++
++module.exports = async (req, res) => {
++  // Security: only allow the Vercel cron (or you, with the secret) to trigger a send.
++  const secret = process.env.CRON_SECRET;
++  if (secret) {
++    const auth = req.headers.authorization || "";
++    const provided = auth.replace("Bearer ", "") || (req.query && req.query.secret) || "";
++    if (provided !== secret) {
++      return res.status(401).json({ error: "Unauthorized" });
++    }
++  }
++
++  const apiKey = process.env.RESEND_API_KEY;
++  const from = process.env.EMAIL_FROM;
++  const to = (process.env.EMAIL_TO || "").split(",").map((s) => s.trim()).filter(Boolean);
++
++  if (!apiKey || !from || to.length === 0) {
++    console.error("Missing RESEND_API_KEY, EMAIL_FROM, or EMAIL_TO.");
++    return res.status(500).json({ error: "Email is not configured yet." });
++  }
++
++  const { dow, weekday, dateStr } = istParts();
++
++  const html = `<div style="max-width:560px;margin:0 auto;padding:24px;background:#080a08;border-radius:18px">
++    <div style="font:800 22px Arial,sans-serif;color:#c4f64a;letter-spacing:.5px">Today's Training</div>
++    <div style="font:400 14px Arial,sans-serif;color:#9aa394;margin:4px 0 20px">${weekday}, ${dateStr} · myfitnessjourney.com</div>
++    ${block("Push / Pull / Legs", PPL[dow])}
++    ${block("Traditional 5-day", TRAD[dow])}
++    <div style="font:400 13px Arial,sans-serif;color:#6f786a;margin-top:8px">Train hard, clean form, then recover. — Daksh's Fitness Journey</div>
++  </div>`;
++
++  try {
++    const r = await fetch("https://api.resend.com/emails", {
++      method: "POST",
++      headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
++      body: JSON.stringify({
++        from,
++        to,
++        subject: `🏋️ ${weekday}'s workout — PPL & 5-day split`,
++        html,
++      }),
++    });
++
++    if (!r.ok) {
++      const detail = await r.text();
++      console.error("Resend error:", r.status, detail);
++      return res.status(502).json({ error: "Email service rejected the send.", detail });
++    }
++
++    const data = await r.json();
++    return res.status(200).json({ ok: true, sent_to: to, id: data.id });
++  } catch (err) {
++    console.error("daily-email crashed:", err);
++    return res.status(500).json({ error: "Something went wrong sending the email." });
++  }
++};
+diff --git a/vercel.json b/vercel.json
+new file mode 100644
+index 0000000..3782421
+--- /dev/null
++++ b/vercel.json
+@@ -0,0 +1,8 @@
++{
++  "crons": [
++    {
++      "path": "/api/daily-email",
++      "schedule": "30 1 * * *"
++    }
++  ]
++}
