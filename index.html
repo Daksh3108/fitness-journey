@@ -620,6 +620,39 @@
       <a href="#top">Back to top</a>
     </footer>
 
+    <!-- ---------- Chat assistant ---------- -->
+    <button
+      id="chat-toggle"
+      class="chat-toggle"
+      aria-label="Open the fitness assistant"
+      aria-expanded="false"
+    >
+      <span class="chat-toggle-icon" aria-hidden="true">💬</span>
+      <span class="chat-toggle-label">Ask me</span>
+    </button>
+
+    <div id="chat-panel" class="chat-panel" role="dialog" aria-label="Fitness assistant" aria-hidden="true">
+      <div class="chat-header">
+        <div class="chat-header-title">
+          <span class="brand-dot" aria-hidden="true"></span>
+          Fitness Assistant
+        </div>
+        <button id="chat-close" class="chat-close" aria-label="Close chat">&times;</button>
+      </div>
+      <div id="chat-log" class="chat-log" aria-live="polite"></div>
+      <form id="chat-form" class="chat-form">
+        <input
+          id="chat-input"
+          class="chat-input"
+          type="text"
+          autocomplete="off"
+          placeholder="Ask about training, diet, the splits…"
+          aria-label="Type your question"
+        />
+        <button type="submit" class="chat-send" aria-label="Send">Send</button>
+      </form>
+    </div>
+
     <script src="script.js"></script>
   </body>
 </html>

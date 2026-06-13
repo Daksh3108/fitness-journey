@@ -307,3 +307,96 @@ function countUp(el) {
   pplBtn.addEventListener("click", () => download("ppl"));
   tradBtn.addEventListener("click", () => download("trad"));
 })();
+
+// ---------- Chat assistant ----------
+(function () {
+  const toggle = document.getElementById("chat-toggle");
+  const panel = document.getElementById("chat-panel");
+  const closeBtn = document.getElementById("chat-close");
+  const log = document.getElementById("chat-log");
+  const form = document.getElementById("chat-form");
+  const input = document.getElementById("chat-input");
+
+  if (!toggle || !panel || !form || !input || !log) return;
+
+  // This array is the conversation MEMORY. It grows as you chat and is sent
+  // to the backend each turn so the bot remembers earlier messages.
+  const messages = [];
+  let greeted = false;
+  let sending = false;
+
+  function addMessage(role, text, opts = {}) {
+    const el = document.createElement("div");
+    el.className = "chat-msg " + (role === "user" ? "user" : "bot");
+    if (opts.typing) el.classList.add("typing");
+    el.textContent = text;
+    log.appendChild(el);
+    log.scrollTop = log.scrollHeight;
+    return el;
+  }
+
+  function openPanel() {
+    panel.classList.add("open");
+    panel.setAttribute("aria-hidden", "false");
+    toggle.setAttribute("aria-expanded", "true");
+    if (!greeted) {
+      addMessage(
+        "bot",
+        "Hey! I'm Daksh's fitness assistant. Ask me anything about the training splits, diet, supplements, or getting started."
+      );
+      greeted = true;
+    }
+    input.focus();
+  }
+
+  function closePanel() {
+    panel.classList.remove("open");
+    panel.setAttribute("aria-hidden", "true");
+    toggle.setAttribute("aria-expanded", "false");
+  }
+
+  toggle.addEventListener("click", () =>
+    panel.classList.contains("open") ? closePanel() : openPanel()
+  );
+  closeBtn.addEventListener("click", closePanel);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && panel.classList.contains("open")) closePanel();
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const text = input.value.trim();
+    if (!text || sending) return;
+
+    sending = true;
+    input.value = "";
+    addMessage("user", text);
+    messages.push({ role: "user", content: text });
+
+    const typing = addMessage("bot", "Typing…", { typing: true });
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages }),
+      });
+
+      const data = await res.json();
+      typing.remove();
+
+      if (!res.ok) {
+        addMessage("bot", data.error || "Sorry, something went wrong.");
+      } else {
+        addMessage("bot", data.reply);
+        messages.push({ role: "assistant", content: data.reply });
+      }
+    } catch (err) {
+      typing.remove();
+      addMessage("bot", "I couldn't reach the server. Please check your connection and try again.");
+    } finally {
+      sending = false;
+      input.focus();
+    }
+  });
+})();
