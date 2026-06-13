@@ -8,11 +8,18 @@
       name="description"
       content="Daksh Avtani's fitness journey, training split, diet, and beginner gym guide."
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&family=Oswald:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div class="scroll-progress" aria-hidden="true"></div>
     <header class="site-header">
-      <a class="brand" href="#top">Daksh Avtani</a>
+      <a class="brand" href="#top"><span class="brand-dot"></span>Daksh Avtani</a>
       <nav class="nav-links" aria-label="Main navigation">
         <a href="#journey">Journey</a>
         <a href="#training">Training</a>
@@ -23,11 +30,22 @@
 
     <main id="top">
       <section class="hero">
+        <div class="ghost-title" aria-hidden="true">Fitness Journey</div>
         <div class="hero-media" aria-hidden="true"></div>
         <div class="hero-overlay"></div>
+        <svg class="hero-wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0,64 C240,140 480,0 720,48 C960,96 1200,20 1440,72" fill="none" stroke="url(#waveGrad)" stroke-width="2.5" />
+          <defs>
+            <linearGradient id="waveGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="rgba(190,242,100,0)" />
+              <stop offset="0.5" stop-color="rgba(190,242,100,0.9)" />
+              <stop offset="1" stop-color="rgba(190,242,100,0)" />
+            </linearGradient>
+          </defs>
+        </svg>
         <div class="hero-content">
           <p class="eyebrow">myfitnessjourney.com</p>
-          <h1>Daksh Avtani's fitness journey</h1>
+          <h1>Daksh Avtani's <span class="accent">fitness journey</span></h1>
           <p class="hero-copy">
             I started training because I struggled with body dysmorphia and did
             not like how I looked. My current goal is to build a shredded
@@ -46,15 +64,15 @@
           <span class="stat-label">Started</span>
         </div>
         <div>
-          <span class="stat-value">63 kg</span>
+          <span class="stat-value" data-count="63" data-suffix=" kg">63 kg</span>
           <span class="stat-label">Starting weight</span>
         </div>
         <div>
-          <span class="stat-value">73.5 kg</span>
+          <span class="stat-value" data-count="73.5" data-decimals="1" data-suffix=" kg">73.5 kg</span>
           <span class="stat-label">Current weight</span>
         </div>
         <div>
-          <span class="stat-value">2 months</span>
+          <span class="stat-value" data-count="2" data-suffix=" months">2 months</span>
           <span class="stat-label">Current goal window</span>
         </div>
       </section>
@@ -121,6 +139,49 @@
               <li><span>Legs</span> Quads, hamstrings, glutes, calves</li>
             </ul>
           </article>
+        </div>
+        <div class="training-note" id="calendar-builder">
+          <h3>Build your workout calendar</h3>
+          <p>
+            Pick your dates and training time, then download either split as a
+            calendar file (.ics) for Google Calendar, Apple Calendar, or Outlook.
+            Every training day includes its exercise list. The push-pull-legs
+            split runs Monday to Saturday; the traditional 5-day split runs
+            Monday to Friday.
+          </p>
+          <div class="ics-form">
+            <label>
+              Start date
+              <input type="date" id="ics-start" />
+            </label>
+            <label>
+              End date
+              <input type="date" id="ics-end" />
+            </label>
+            <label>
+              Daily time
+              <input type="time" id="ics-time" value="18:00" />
+            </label>
+            <label>
+              Session length
+              <select id="ics-duration">
+                <option value="60">60 min</option>
+                <option value="75">75 min</option>
+                <option value="90" selected>90 min</option>
+                <option value="105">105 min</option>
+                <option value="120">120 min</option>
+              </select>
+            </label>
+          </div>
+          <p style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap">
+            <button type="button" class="button primary" id="ics-ppl">
+              Download PPL calendar
+            </button>
+            <button type="button" class="button secondary" id="ics-trad">
+              Download 5-day split calendar
+            </button>
+          </p>
+          <p id="ics-msg" role="status" aria-live="polite"></p>
         </div>
         <div class="highlight">
           <strong>My rule:</strong> you do not need five different exercises
@@ -363,6 +424,27 @@
           <p class="eyebrow">Diet</p>
           <h2>How I eat while cutting</h2>
         </div>
+        <div class="training-note">
+          <h3>Step 1: find your calorie target</h3>
+          <p>
+            Diet starts with knowing your numbers. Use this free TDEE
+            calculator to estimate how many calories you need to cut, maintain,
+            or bulk based on your age, gender, height, weight, and activity
+            level. It uses the Mifflin-St Jeor formula (and Katch-McArdle if you
+            know your body fat), which research rates as the most accurate for
+            most people. Treat the result as a starting point, then adjust based
+            on your weight trend over 2-3 weeks.
+          </p>
+          <p style="margin-top: 16px">
+            <a
+              class="button primary"
+              href="https://www.calculator.net/tdee-calculator.html"
+              target="_blank"
+              rel="noreferrer"
+              >Open the calorie calculator</a
+            >
+          </p>
+        </div>
         <div class="meal-grid">
           <article class="meal-card">
             <span class="meal-time">Breakfast</span>
@@ -537,6 +619,39 @@
       <p>Daksh Avtani | My Fitness Journey</p>
       <a href="#top">Back to top</a>
     </footer>
+
+    <!-- ---------- Chat assistant ---------- -->
+    <button
+      id="chat-toggle"
+      class="chat-toggle"
+      aria-label="Open the fitness assistant"
+      aria-expanded="false"
+    >
+      <span class="chat-toggle-icon" aria-hidden="true">💬</span>
+      <span class="chat-toggle-label">Ask me</span>
+    </button>
+
+    <div id="chat-panel" class="chat-panel" role="dialog" aria-label="Fitness assistant" aria-hidden="true">
+      <div class="chat-header">
+        <div class="chat-header-title">
+          <span class="brand-dot" aria-hidden="true"></span>
+          Fitness Assistant
+        </div>
+        <button id="chat-close" class="chat-close" aria-label="Close chat">&times;</button>
+      </div>
+      <div id="chat-log" class="chat-log" aria-live="polite"></div>
+      <form id="chat-form" class="chat-form">
+        <input
+          id="chat-input"
+          class="chat-input"
+          type="text"
+          autocomplete="off"
+          placeholder="Ask about training, diet, the splits…"
+          aria-label="Type your question"
+        />
+        <button type="submit" class="chat-send" aria-label="Send">Send</button>
+      </form>
+    </div>
 
     <script src="script.js"></script>
   </body>
