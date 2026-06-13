@@ -1,4 +1,22 @@
 // api/daily-email.js
+// Sends a "today's workout" email every morning through GMAIL (SMTP).
+//
+// WHY GMAIL: sending through your own Gmail account lets you email ANYONE
+// (including your friend) WITHOUT owning/verifying a domain — Google already
+// trusts your account. Vercel Cron (vercel.json) calls this once a day at
+// 7:00 AM IST.
+//
+// SECRETS (set as Environment Variables in Vercel — never in code):
+//   GMAIL_USER          -> your full Gmail address, e.g. "you@gmail.com"
+//   GMAIL_APP_PASSWORD  -> a 16-character Google "App Password" (NOT your normal
+//                          password). Requires 2-Step Verification turned on.
+//   EMAIL_TO            -> comma-separated recipients, e.g. "you@gmail.com,friend@gmail.com"
+//   EMAIL_FROM          -> (optional) display name, e.g. "Daksh Fitness".
+//                          Defaults to your Gmail address.
+//   CRON_SECRET         -> any random string. Vercel auto-sends it so only the
+//                          cron (or you, with the secret) can trigger a send.
+
+const nodemailer = require("nodemailer");
 // Sends a "today's workout" email every morning via Resend.
 //
 // HOW IT RUNS: Vercel Cron (configured in vercel.json) calls this endpoint once
@@ -60,6 +78,7 @@ function block(name, workout) {
 }
 
 module.exports = async (req, res) => {
+  // Security: only the Vercel cron (or you, with the secret) may trigger a send.
   // Security: only allow the Vercel cron (or you, with the secret) to trigger a send.
   const secret = process.env.CRON_SECRET;
   if (secret) {
@@ -70,6 +89,13 @@ module.exports = async (req, res) => {
     }
   }
 
+  const user = process.env.GMAIL_USER;
+  const pass = process.env.GMAIL_APP_PASSWORD;
+  const to = (process.env.EMAIL_TO || "").split(",").map((s) => s.trim()).filter(Boolean);
+  const fromName = process.env.EMAIL_FROM || "Daksh's Fitness Journey";
+
+  if (!user || !pass || to.length === 0) {
+    console.error("Missing GMAIL_USER, GMAIL_APP_PASSWORD, or EMAIL_TO.");
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.EMAIL_FROM;
   const to = (process.env.EMAIL_TO || "").split(",").map((s) => s.trim()).filter(Boolean);
@@ -90,6 +116,25 @@ module.exports = async (req, res) => {
   </div>`;
 
   try {
+    // Gmail SMTP. App Password required (with 2-Step Verification enabled).
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: { user, pass },
+    });
+
+    const info = await transporter.sendMail({
+      from: `${fromName} <${user}>`,
+      to,
+      subject: `🏋️ ${weekday}'s workout — PPL & 5-day split`,
+      html,
+    });
+
+    return res.status(200).json({ ok: true, sent_to: to, id: info.messageId });
+  } catch (err) {
+    console.error("daily-email crashed:", err);
+    return res.status(502).json({ error: "Could not send the email.", detail: String(err && err.message || err) });
     const r = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
