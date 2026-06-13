@@ -17,6 +17,20 @@
 //                          cron (or you, with the secret) can trigger a send.
 
 const nodemailer = require("nodemailer");
+// Sends a "today's workout" email every morning via Resend.
+//
+// HOW IT RUNS: Vercel Cron (configured in vercel.json) calls this endpoint once
+// a day at 7:00 AM IST. It works out today's weekday, looks up the workout for
+// BOTH splits (PPL + traditional 5-day), builds an email, and sends it through
+// Resend to everyone listed in EMAIL_TO.
+//
+// SECRETS (set these as Environment Variables in Vercel — never in code):
+//   RESEND_API_KEY  -> your Resend API key
+//   EMAIL_FROM      -> verified sender, e.g. "Daksh Fitness <goals@myfitnessjourney.com>"
+//                      (for first tests you can use "onboarding@resend.dev")
+//   EMAIL_TO        -> comma-separated recipients, e.g. "me@gmail.com,friend@gmail.com"
+//   CRON_SECRET     -> any random string. Vercel auto-sends it so only the cron
+//                      (or you, with the secret) can trigger a send.
 
 const ABS = "Abs superset: leg raises, cable crunches, hip raises";
 
@@ -65,6 +79,7 @@ function block(name, workout) {
 
 module.exports = async (req, res) => {
   // Security: only the Vercel cron (or you, with the secret) may trigger a send.
+  // Security: only allow the Vercel cron (or you, with the secret) to trigger a send.
   const secret = process.env.CRON_SECRET;
   if (secret) {
     const auth = req.headers.authorization || "";
@@ -81,6 +96,12 @@ module.exports = async (req, res) => {
 
   if (!user || !pass || to.length === 0) {
     console.error("Missing GMAIL_USER, GMAIL_APP_PASSWORD, or EMAIL_TO.");
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = process.env.EMAIL_FROM;
+  const to = (process.env.EMAIL_TO || "").split(",").map((s) => s.trim()).filter(Boolean);
+
+  if (!apiKey || !from || to.length === 0) {
+    console.error("Missing RESEND_API_KEY, EMAIL_FROM, or EMAIL_TO.");
     return res.status(500).json({ error: "Email is not configured yet." });
   }
 
@@ -114,5 +135,27 @@ module.exports = async (req, res) => {
   } catch (err) {
     console.error("daily-email crashed:", err);
     return res.status(502).json({ error: "Could not send the email.", detail: String(err && err.message || err) });
+    const r = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
+      body: JSON.stringify({
+        from,
+        to,
+        subject: `🏋️ ${weekday}'s workout — PPL & 5-day split`,
+        html,
+      }),
+    });
+
+    if (!r.ok) {
+      const detail = await r.text();
+      console.error("Resend error:", r.status, detail);
+      return res.status(502).json({ error: "Email service rejected the send.", detail });
+    }
+
+    const data = await r.json();
+    return res.status(200).json({ ok: true, sent_to: to, id: data.id });
+  } catch (err) {
+    console.error("daily-email crashed:", err);
+    return res.status(500).json({ error: "Something went wrong sending the email." });
   }
 };
